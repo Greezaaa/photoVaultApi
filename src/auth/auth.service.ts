@@ -25,8 +25,12 @@ export class AuthService {
 
   login(user: Partial<User>) {
     const payload = { email: user.email, sub: user.id };
-    return {
-      token: this.jwtService.sign(payload),
-    };
+
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
+
+    return { token };
   }
 }

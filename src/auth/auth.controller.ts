@@ -8,7 +8,10 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() body) {
-    const user = await this.authService.validateUser(body.email, body.password);
+    const user = await this.authService.validateUser(
+      body.email as string,
+      body.password as string,
+    );
 
     if (user) {
       return this.authService.login(user);

@@ -18,7 +18,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard, RolesGuard, StatusGuard)
   @UseRoles(UserRoles.ADMIN)
-  @UseStatus(UserStatus.PENDING)
+  @UseStatus(UserStatus.ACTIVE)
   @Get()
   findAll() {
     return this.userService.findAll();

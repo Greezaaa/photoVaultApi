@@ -3,7 +3,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // const httpsOptions = {
+  //   key: readFileSync(resolve(__dirname, 'path/to/private.key')),
+  //   cert: readFileSync(resolve(__dirname, 'path/to/certificate.crt')),
+  // };
+  const app = await NestFactory.create(
+    AppModule,
+    // { httpsOptions }
+  );
   if (process.env.NODE_ENV !== 'production') {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     require('tsconfig-paths/register');

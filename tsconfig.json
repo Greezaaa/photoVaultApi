@@ -10,6 +10,22 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@guards": ["src/guards"],
+      "@guards/*": ["src/guards/*"],
+      "@utils": ["src/utils"],
+      "@utils/*": ["src/utils/*"],
+      "@config": ["src/config"],
+      "@config/*": ["src/config/*"],
+      "@interfaces": ["src/interfaces"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@resources": ["src/resources"],
+      "@resources/*": ["src/resources/*"],
+      "@decorators": ["src/decorators"],
+      "@decorators/*": ["src/decorators/*"],
+      "@strategies": ["src/strategies"],
+      "@strategies/*": ["src/strategies/*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
@@ -20,5 +36,6 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "strictPropertyInitialization": false
-  }
+  },
+  "exclude": ["node_modules", "dist", "tsconfig-paths-bootstrap.js"]
 }

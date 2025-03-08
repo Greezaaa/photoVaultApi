@@ -1,3 +1,4 @@
+import { UserRoles, UserStatus } from '@interfaces';
 import * as bcrypt from 'bcrypt';
 import {
   IsBoolean,
@@ -8,8 +9,6 @@ import {
   MinLength,
 } from 'class-validator';
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { UserRoles } from '../interfaces/user-roles.interface';
-import { UserStatus } from '../interfaces/user-status.interface';
 
 @Entity('users')
 export class User {

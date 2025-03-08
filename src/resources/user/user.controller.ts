@@ -1,11 +1,15 @@
+import { UseRoles, UseStatus } from '@decorators';
+import { JwtAuthGuard, RolesGuard, StatusGuard } from '@guards';
+import { UserRoles } from '@interfaces/user-roles.interface';
+import { UserStatus } from '@interfaces/user-status.interface';
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -20,11 +24,9 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Delete()
-  check() {
-    return this.userService.findAll();
-  }
-
+  @UseGuards(JwtAuthGuard, RolesGuard, StatusGuard)
+  @UseRoles(UserRoles.ADMIN)
+  @UseStatus(UserStatus.PENDING)
   @Get()
   findAll() {
     return this.userService.findAll();

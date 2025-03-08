@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { JwtPayload } from '@interfaces';
+import { JwtPayload, UserRoles, UserStatus } from '@interfaces';
 import { UnauthorizedException } from '@nestjs/common';
+import { User } from '@resources/user/entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -15,12 +16,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: JwtPayload) {
+  validate(payload: JwtPayload): Partial<User> {
     console.log(payload);
-    const { sub: userId, email, role, status } = payload;
-    if (!userId) {
+    const { id, email, role, status } = payload;
+    if (!id) {
       throw new UnauthorizedException('Token not valid, pls login');
     }
-    return { userId, email, role, status };
+    if (!Object.values(UserRoles).includes(role)) {
+      throw new UnauthorizedException('Invalid user role');
+    }
+
+    if (!Object.values(UserStatus).includes(status)) {
+      throw new UnauthorizedException('Invalid user status');
+    }
+    return { id, email, role, status };
   }
 }

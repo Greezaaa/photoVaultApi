@@ -1,13 +1,6 @@
 import { UserRoles, UserStatus } from '@interfaces';
 import * as bcrypt from 'bcrypt';
-import {
-  IsBoolean,
-  IsEmail,
-  IsEnum,
-  IsString,
-  IsUUID,
-  MinLength,
-} from 'class-validator';
+import { IsBoolean, IsEmail, IsEnum, IsString, IsUUID, MinLength } from 'class-validator';
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')

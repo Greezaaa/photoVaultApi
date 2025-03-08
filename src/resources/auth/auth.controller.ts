@@ -11,10 +11,7 @@ export class AuthController {
   @Post('login')
   @Public()
   async login(@Body() body) {
-    const user = await this.authService.validateUser(
-      body.email as string,
-      body.password as string,
-    );
+    const user = await this.authService.validateUser(body.email as string, body.password as string);
 
     if (user) {
       return this.authService.login(user);

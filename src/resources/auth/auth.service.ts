@@ -24,14 +24,12 @@ export class AuthService {
   }
 
   login(user: Partial<User>) {
-    console.log('login USER:', user);
     const payload = {
       email: user.email,
-      sub: user.id,
+      id: user.id,
       role: user.role,
       status: user.status,
     };
-    console.log('login: ', payload);
 
     const token = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,

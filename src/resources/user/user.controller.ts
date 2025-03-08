@@ -2,15 +2,7 @@ import { UseRoles, UseStatus } from '@decorators';
 import { JwtAuthGuard, RolesGuard, StatusGuard } from '@guards';
 import { UserRoles } from '@interfaces/user-roles.interface';
 import { UserStatus } from '@interfaces/user-status.interface';
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Patch,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';

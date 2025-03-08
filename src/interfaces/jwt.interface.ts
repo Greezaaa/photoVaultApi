@@ -1,6 +1,9 @@
+import { UserRoles } from './user-roles.interface';
+import { UserStatus } from './user-status.interface';
+
 export interface JwtPayload {
   email: string;
-  sub: string;
-  role: string;
-  status: string;
+  id: string;
+  role: UserRoles;
+  status: UserStatus;
 }

@@ -37,5 +37,5 @@
     "noFallthroughCasesInSwitch": false,
     "strictPropertyInitialization": false
   },
-  "exclude": ["node_modules", "dist", "tsconfig-paths-bootstrap.js"]
+  "exclude": ["node_modules", "dist"]
 }

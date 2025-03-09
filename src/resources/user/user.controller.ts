@@ -1,7 +1,7 @@
 import { Public, UseRoles, UseStatus } from '@decorators';
 import { JwtAuthGuard, RolesGuard, StatusGuard } from '@guards';
 import { AuthRequest, UserRoles, UserStatus } from '@interfaces';
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { ConfirmUserEmailDto } from './dto/confirm-user-email.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -10,15 +10,18 @@ import { UserService } from './user.service';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+  private readonly logger = new Logger(UserController.name);
   @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
+    this.logger.log(`Create user intent ${createUserDto.email}`);
     return this.userService.create(createUserDto);
   }
 
   @Public()
   @Patch('email-confirm/:email/:emailCode')
   emailConfirm(@Param() params: ConfirmUserEmailDto) {
+    this.logger.log(`Confirm email ${params.email} intent with code ${params.emailCode}`);
     return this.userService.confirmEmail(params.email, params.emailCode);
   }
 
@@ -28,6 +31,7 @@ export class UserController {
   @Patch('update')
   update(@Req() req: AuthRequest, @Body() updateUserDto: UpdateUserDto) {
     const id = req.user.id;
+    this.logger.log(`Update intent user with id:  ${id}`);
     return this.userService.update(id, updateUserDto);
   }
 

@@ -1,5 +1,5 @@
 import { UserRoles, UserStatus } from '@interfaces';
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generateRandomCode } from '@utils';
 import { Repository } from 'typeorm';
@@ -9,6 +9,7 @@ import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
@@ -21,9 +22,11 @@ export class UserService {
       where: { email: lowerCaseEmail },
     });
     if (existingUser) {
+      this.logger.log(`ConflictException: Email already in use`);
       throw new ConflictException('Email already in use, pls login', 'warning');
     }
     if (!password) {
+      this.logger.log(`BadRequestException: Password is required`);
       throw new BadRequestException('Password is required', 'Error');
     }
 
@@ -35,6 +38,7 @@ export class UserService {
       surname2: '',
       emailCode: generatedCode,
     });
+    this.logger.log(`User ${createUserDto.email} successfully created`);
     return this.userRepository.save(user);
   }
 
@@ -42,10 +46,12 @@ export class UserService {
     const user = await this.findByEmail(email);
 
     if (user.emailVerified) {
+      this.logger.log(`BadRequestException: Email is already verified`);
       throw new BadRequestException('Email is already verified.', 'Error');
     }
 
     if (user.emailCode !== emailCode) {
+      this.logger.log(`BadRequestException: Invalid email confirmation code`);
       throw new BadRequestException('Invalid email confirmation code.', 'Error');
     }
     user.emailVerified = true;
@@ -55,6 +61,7 @@ export class UserService {
 
     await this.userRepository.save(user);
 
+    this.logger.log(`Users email ${user.email} successfully confirmed`);
     return {
       email: user.email,
       emailVerified: user.emailVerified,
@@ -66,7 +73,10 @@ export class UserService {
   async update(id: string, updateData: UpdateUserDto): Promise<Partial<User>> {
     await this.findOne(id);
     await this.userRepository.update(id, updateData);
+    this.logger.log(`Users with ID: ${id} successfully updated`);
     const updatedUser = await this.findOne(id);
+    this.logger.log(`Users with ID: ${updatedUser.id} successfully updated`);
+
     return {
       name: updatedUser.name,
       surname1: updatedUser.surname1,
@@ -85,8 +95,10 @@ export class UserService {
       where: { email },
     });
     if (!user) {
-      throw new NotFoundException('No user with thi email', 'warning');
+      this.logger.log(`NotFoundException: No user with this email', 'warning`);
+      throw new NotFoundException('No user with this email', 'warning');
     }
+    this.logger.log(`Successfully found user with email: ${user.email}`);
     return user;
   }
 
@@ -95,8 +107,10 @@ export class UserService {
       where: { id },
     });
     if (!user) {
+      this.logger.log(`NotFoundException: User with id ${id} not found`);
       throw new NotFoundException(`User with id ${id} not found`);
     }
+    this.logger.log(`Successfully found user with id: ${id}`);
     return user;
   }
 

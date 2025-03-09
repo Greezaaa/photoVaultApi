@@ -3,16 +3,13 @@ import { JwtAuthGuard } from '@guards';
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { seconds, ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { AuthModule } from '@resources/auth/auth.module';
-import { UserModule } from '@resources/user/user.module';
+import { AuthModule, UserModule } from '@resources';
 import { AppService } from '../app.service';
 import { AppController } from './app.controller';
 
 @Module({
   imports: [
     DatabaseModule,
-    UserModule,
-    AuthModule,
     ThrottlerModule.forRoot({
       throttlers: [
         {
@@ -23,6 +20,8 @@ import { AppController } from './app.controller';
       ],
       errorMessage: 'Too many requests. Please try again later.',
     }),
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

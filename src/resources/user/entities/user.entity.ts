@@ -1,6 +1,6 @@
 import { UserRoles, UserStatus } from '@interfaces';
 import * as bcrypt from 'bcrypt';
-import { IsBoolean, IsEmail, IsEnum, IsString, IsUUID, MinLength } from 'class-validator';
+import { IsBoolean, IsEmail, IsEnum, IsString, IsUUID, MaxLength, MinLength } from 'class-validator';
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
@@ -12,7 +12,20 @@ export class User {
   @Column()
   @IsString()
   @MinLength(3)
+  @MaxLength(40)
   name: string;
+
+  @Column()
+  @IsString()
+  @MinLength(3)
+  @MaxLength(40)
+  surname1: string;
+
+  @Column()
+  @IsString()
+  @MinLength(3)
+  @MaxLength(40)
+  surname2: string;
 
   @Column()
   @IsEmail()
@@ -20,6 +33,7 @@ export class User {
 
   @Column()
   @IsString()
+  @MaxLength(6)
   emailCode: string;
 
   @Column({ default: false })
@@ -49,6 +63,7 @@ export class User {
   @Column()
   @IsString()
   @MinLength(6)
+  @MaxLength(40)
   password: string;
 
   @BeforeInsert()

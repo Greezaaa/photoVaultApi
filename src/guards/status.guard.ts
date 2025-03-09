@@ -14,7 +14,6 @@ export class StatusGuard implements CanActivate {
     }
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    console.log('User object:', user);
 
     if (!user || !user.status) {
       throw new ForbiddenException('User status not found');

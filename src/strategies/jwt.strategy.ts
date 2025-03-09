@@ -17,7 +17,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   validate(payload: JwtPayload): Partial<User> {
-    console.log(payload);
     const { id, email, role, status } = payload;
     if (!id) {
       throw new UnauthorizedException('Token not valid, pls login');

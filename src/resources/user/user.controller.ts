@@ -39,8 +39,16 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RolesGuard, StatusGuard)
   @UseRoles(UserRoles.ADMIN, UserRoles.SUPER_ADMIN)
   @UseStatus(UserStatus.ACTIVE)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get(':email')
+  findOneByEmail(@Param('email') email: string) {
+    return this.userService.findByEmail(email);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard, StatusGuard)
+  @UseRoles(UserRoles.ADMIN, UserRoles.SUPER_ADMIN)
+  @UseStatus(UserStatus.ACTIVE)
+  @Get('id/:id')
+  findOneById(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
 

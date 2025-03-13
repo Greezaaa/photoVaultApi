@@ -1,4 +1,5 @@
 import { DatabaseModule } from '@config/database/database.module';
+import { BlobStorageService } from '@config/services/BlobStorageService';
 import { JwtAuthGuard } from '@guards';
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
@@ -6,6 +7,7 @@ import { seconds, ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule, UserModule } from '@resources';
 import { AppService } from '../app.service';
 import { AppController } from './app.controller';
+import { GalleryModule } from './resources/gallery/gallery.module';
 
 @Module({
   imports: [
@@ -22,11 +24,12 @@ import { AppController } from './app.controller';
     }),
     UserModule,
     AuthModule,
+    GalleryModule,
   ],
   controllers: [AppController],
   providers: [
+    BlobStorageService,
     AppService,
-
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

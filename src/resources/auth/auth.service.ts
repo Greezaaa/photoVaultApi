@@ -13,16 +13,17 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string): Promise<Partial<User>> {
-    const user = await this.userService.findByEmail(email);
+    const loverCaseEmail = email.toLowerCase();
+    const user = await this.userService.findByEmail(loverCaseEmail);
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      this.logger.log(`UnauthorizedException: Invalid credentials ${email}`);
+      this.logger.log(`UnauthorizedException: Invalid credentials ${loverCaseEmail}`);
       throw new UnauthorizedException('Invalid credentials');
     }
 
     const { id, name, email: userEmail, role, status } = user;
-    this.logger.log(`User validated successfully: with email ${email}`);
+    this.logger.log(`User validated successfully: with email ${loverCaseEmail}`);
     return { id, name, email: userEmail, role, status };
   }
 

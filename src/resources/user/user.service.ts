@@ -33,6 +33,7 @@ export class UserService {
     const generatedCode = generateRandomCode();
     const user = this.userRepository.create({
       ...createUserDto,
+      email: lowerCaseEmail,
       name: '',
       surname1: '',
       surname2: '',
